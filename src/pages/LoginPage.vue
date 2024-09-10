@@ -39,33 +39,68 @@ export default {
       password,
 
       async onSubmit() {
-        try {
-          const response = await fetch(
-            'https://flask-hello-world-ktjt.vercel.app/login',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ username, password }),
-            }
-          );
+        const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        myHeaders.append('Accept', 'application/json');
 
-          if (!response.ok) {
-            throw new Error('Login failed');
-          }
+        myHeaders.append(
+          'Access-Control-Allow-Origin',
+          'http://localhost:3000'
+        );
+        myHeaders.append('Access-Control-Allow-Credentials', 'true');
 
-          const data = await response.json();
-          const token = data.token;
+        myHeaders.append('GET', 'POST', 'OPTIONS');
 
-          // Store the token in local storage
-          localStorage.setItem('token', token);
-          // Redirect to the protected page
-          // window.location.href = '/protected-page';
-        } catch (error) {
-          // messageElement.textContent = 'Login failed: ' + error.message;
-          console.log(error);
-        }
+        const raw = JSON.stringify({
+          username: 'asd',
+          password: 'qwe',
+        });
+
+        const requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          // redirect: 'follow',
+          credentials: 'include',
+          mode: 'cors',
+        };
+
+        fetch('https://flask-hello-world-ktjt.vercel.app/login', requestOptions)
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) => console.error(error));
+        // try {
+        //   const response = await fetch(
+        //     'https://flask-hello-world-ktjt.vercel.app/login',
+        //     {
+        //       method: 'POST',
+        //       headers: {
+        //         'Content-Type': 'application/json',
+        //         Accept: 'application/json',
+        //       },
+        //       body: JSON.stringify({
+        //         username: username.value,
+        //         password: password.value,
+        //       }),
+        //     }
+        //   );
+
+        //   if (!response.ok) {
+        //     console.log(reponse);
+        //     throw new Error('Login failed');
+        //   }
+
+        //   const data = response;
+        //   const token = data;
+
+        //   // Store the token in local storage
+        //   localStorage.setItem('token', token);
+        //   // Redirect to the protected page
+        //   // window.location.href = '/protected-page';
+        // } catch (error) {
+        //   // messageElement.textContent = 'Login failed: ' + error.message;
+        //   console.log(error.message);
+        // }
 
         // const myHeaders = new Headers();
         // myHeaders.append(

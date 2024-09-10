@@ -1,3 +1,4 @@
 {
+  "corsProxy": false,
   "startCommand": "npm run dev"
 }
